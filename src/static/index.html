@@ -3,46 +3,35 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Mergington High School Activities</title>
+    <title>Word Occurrence Counter</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <header>
-      <h1>Mergington High School</h1>
-      <h2>Extracurricular Activities</h2>
+      <h1>Word Occurrence Counter</h1>
+      <h2>Upload a text file and find a word count</h2>
     </header>
 
     <main>
-      <section id="activities-container">
-        <h3>Available Activities</h3>
-        <div id="activities-list">
-          <!-- Activities will be loaded here -->
-          <p>Loading activities...</p>
-        </div>
-      </section>
-
-      <section id="signup-container">
-        <h3>Sign Up for an Activity</h3>
-        <form id="signup-form">
+      <section id="word-counter-container">
+        <h3>Count Word Occurrences</h3>
+        <form id="word-count-form">
           <div class="form-group">
-            <label for="email">Student Email:</label>
-            <input type="email" id="email" required placeholder="your-email@mergington.edu" />
+            <label for="word">Word to count:</label>
+            <input type="text" id="word" required placeholder="Enter a word" />
           </div>
           <div class="form-group">
-            <label for="activity">Select Activity:</label>
-            <select id="activity" required>
-              <option value="">-- Select an activity --</option>
-              <!-- Activity options will be loaded here -->
-            </select>
+            <label for="text-file">Text file:</label>
+            <input type="file" id="text-file" accept=".txt,text/plain" required />
           </div>
-          <button type="submit">Sign Up</button>
+          <button type="submit">Count occurrences</button>
         </form>
         <div id="message" class="hidden"></div>
       </section>
     </main>
 
     <footer>
-      <p>&copy; 2023 Mergington High School</p>
+      <p>&copy; 2026 Word Counter</p>
     </footer>
 
     <script src="app.js"></script>

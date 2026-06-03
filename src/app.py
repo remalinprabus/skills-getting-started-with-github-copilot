@@ -1,18 +1,16 @@
-"""
-High School Management System API
+"""Word occurrence counter API."""
 
-A super simple FastAPI application that allows students to view and sign up
-for extracurricular activities at Mergington High School.
-"""
-
-from fastapi import FastAPI, HTTPException
+import re
+from fastapi import FastAPI, HTTPException, UploadFile, File, Form
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import RedirectResponse
 import os
 from pathlib import Path
 
-app = FastAPI(title="Mergington High School API",
-              description="API for viewing and signing up for extracurricular activities")
+app = FastAPI(
+    title="Word Occurrence Counter API",
+    description="API for counting occurrences of a specific word in a text file",
+)
 
 # Mount the static files directory
 current_dir = Path(__file__).parent
@@ -65,3 +63,27 @@ def signup_for_activity(activity_name: str, email: str):
     # Add student
     activity["participants"].append(email)
     return {"message": f"Signed up {email} for {activity_name}"}
+
+
+def count_word_occurrences(text: str, word: str) -> int:
+    pattern = rf"\b{re.escape(word)}\b"
+    return len(re.findall(pattern, text, flags=re.IGNORECASE))
+
+
+@app.post("/word-count")
+async def word_count(word: str = Form(...), text_file: UploadFile = File(...)):
+    if not word.strip():
+        raise HTTPException(status_code=400, detail="Word must not be empty")
+
+    try:
+        text = (await text_file.read()).decode("utf-8")
+    except UnicodeDecodeError as exc:
+        raise HTTPException(
+            status_code=400, detail="Only UTF-8 text files are supported"
+        ) from exc
+
+    return {
+        "filename": text_file.filename,
+        "word": word.strip(),
+        "count": count_word_occurrences(text, word.strip()),
+    }
